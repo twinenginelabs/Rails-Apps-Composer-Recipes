@@ -1,0 +1,22 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+site 'http://community.opscode.com/api/v1'
+
+cookbook 'apt'
+
+cookbook 'build-essential'
+
+cookbook 'git'
+
+cookbook 'postgresql'
+
+cookbook 'ruby_build'
+
+cookbook 'imagemagick'
+
+cookbook 'rbenv', 
+  git: 'https://github.com/fnichol/chef-rbenv.git'
+
+cookbook 'nodejs',
+  git: 'https://github.com/mdxp/nodejs-cookbook.git'

@@ -1,0 +1,1 @@
+OmniAuth.config.full_host = "http://#{ProjectName::Application.config.host}"

@@ -1,0 +1,20 @@
+/*
+ *= require jquery.ui.all
+ *= require bootstrap
+ *= require bootstrap-responsive
+ *= require_self
+ */
+
+body {
+  padding-top: 55px; padding-bottom:20px;
+}
+
+.alert-message {
+  text-align: center;
+}
+
+[class*="span"].centered {
+  margin-left: auto;
+  margin-right: auto;
+  float: none;
+}

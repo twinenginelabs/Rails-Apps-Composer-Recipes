@@ -1,0 +1,21 @@
+cloud_provider: digital_ocean
+cloud_providers:
+  digital_ocean:
+    region: New York 2
+    image_id: Ubuntu 12.04 x64
+    client_key: "#{ENV['DIGITAL_OCEAN_CLIENT_ID']}"
+    api_key: "#{ENV['DIGITAL_OCEAN_API_KEY']}"
+    key_dir: "#{(File.expand_path('~') rescue '/root') + '/.ssh/digitalocean-project_name' }"
+    key_name: "#{`whoami`.chomp}"
+    key_file: "#{Dir[key_dir + '/*' + key_name].first}"
+environments:
+  staging:
+    cloud_providers:
+      digital_ocean:
+        image_type: 2GB
+    unicorn_worker_count: 6
+  production:
+    cloud_providers:
+      digital_ocean:
+        image_type: 2GB
+    unicorn_worker_count: 6

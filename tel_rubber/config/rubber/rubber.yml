@@ -1,0 +1,62 @@
+app_name: project_name
+app_user: root
+admin_email: "root@#{full_host}"
+web_tools_user: admin
+web_tools_password: "#{ENV['WEB_TOOLS_PASSWORD']}"
+timezone: US/Central
+domain: project_name.com
+
+web_port: 80
+web_ssl_port: 443
+web_tools_port: 8080
+web_tools_ssl_port: 8443
+
+security_groups:
+  default:
+    description: The default security group
+    rules:
+      - source_group_name: default
+        source_group_account: default
+      - protocol: tcp
+        from_port: 22
+        to_port: 22
+        source_ips: [0.0.0.0/0]
+  web:
+    description: "To open up port #{web_port}/#{web_ssl_port} for http server on web role"
+    rules:
+      - protocol: tcp
+        from_port: "#{web_port}"
+        to_port: "#{web_port}"
+        source_ips: [0.0.0.0/0]
+      - protocol: tcp
+        from_port: "#{web_ssl_port}"
+        to_port: "#{web_ssl_port}"
+        source_ips: [0.0.0.0/0]
+  web_tools:
+    description: "To open up port #{web_tools_port}/#{web_tools_ssl_port} for internal/tools http server"
+    rules:
+      - protocol: tcp
+        from_port: "#{web_tools_port}"
+        to_port: "#{web_tools_port}"
+        source_ips: [0.0.0.0/0]
+      - protocol: tcp
+        from_port: "#{web_tools_ssl_port}"
+        to_port: "#{web_tools_ssl_port}"
+        source_ips: [0.0.0.0/0]
+
+assigned_security_groups: [default]
+roles:
+  web:
+    assigned_security_groups: [web]
+  web_tools:
+    assigned_security_groups: [web_tools]
+
+auto_security_groups: true
+isolate_security_groups: true
+prompt_for_security_group_sync: true
+packages: [
+  postfix, build-essential, git-core, libxslt-dev, ntp,
+  screen, htop, imagemagick, libmagickwand-dev, nodejs
+]
+gems: [open4, aws-s3, bundler, [rubber, "#{Rubber.version}"]]
+stop_on_error_cmd: "function error_exit { exit 99; }; trap error_exit ERR"
