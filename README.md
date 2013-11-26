@@ -1,4 +1,5 @@
 ## Setup
+    rvm gemset use <APP_NAME> --create
     gem install rails
     gem install rails_apps_composer
     export TEL_RAILS_APPS_COMPOSER_RECIPE_PATH=/path/to/your/recipes

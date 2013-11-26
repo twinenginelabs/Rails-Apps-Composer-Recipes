@@ -5,7 +5,7 @@ puts
 
 puts "Seeding users:"
 user = User.find_or_create_by_email('admin@twinenginelabs.com')
-user.password = "password"
+user.password = "twin1234"
 user.roles << admin_role
 user.save(:validate => false); print(".")
 puts
