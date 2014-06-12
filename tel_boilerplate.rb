@@ -15,6 +15,8 @@ Dir.glob("**/*").reject { |file| File.directory?(file) }.each do |file|
   gsub_file file, /project_name/, "#{app_name}"
 end
 
+gsub_file "Gemfile", /RUBY_VERSION/, "#{RUBY_VERSION}"
+gsub_file "Gemfile", /sqlite3/, "pg"
 gsub_file "config/environments/staging.rb", /#{app_name}(.*).com/, "#{app_name.dasherize}#{$1}.com"
 gsub_file "config/environments/production.rb", /#{app_name}(.*).com/, "#{app_name.dasherize}#{$1}.com"
 

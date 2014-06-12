@@ -1,5 +1,11 @@
 class User < ActiveRecord::Base
-  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :token_authenticatable, :validatable, :omniauthable
+  devise :database_authenticatable, 
+         :omniauthable, 
+         :recoverable, 
+         :registerable, 
+         :rememberable, 
+         :trackable, 
+         :validatable
 
   has_many :authentications, :dependent => :destroy
   has_and_belongs_to_many :roles
@@ -13,6 +19,8 @@ class User < ActiveRecord::Base
 
   validates_presence_of :email
 
+  before_save :ensure_authentication_token
+
   # Allow logins via username OR email
   attr_accessor :login
   def self.find_first_by_auth_conditions(warden_conditions)
@@ -24,8 +32,14 @@ class User < ActiveRecord::Base
     end
   end
 
-  def after_token_authentication
+    def after_token_authentication
     reset_authentication_token!
+  end
+
+  def ensure_authentication_token
+    if authentication_token.blank?
+      self.authentication_token = generate_authentication_token
+    end
   end
 
   def set_roles(role_names)
@@ -133,6 +147,13 @@ class User < ActiveRecord::Base
 
   private
 
+  def generate_authentication_token
+    loop do
+      token = Devise.friendly_token
+      break token unless User.where(authentication_token: token).count > 0
+    end
+  end
+  
   def create_or_update_authentication(auth)
     existing_authentication = Authentication.find_by_provider_and_uid(auth['provider'], auth['uid'])
 

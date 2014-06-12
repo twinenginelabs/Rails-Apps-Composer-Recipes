@@ -1,8 +1,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-ENV["RAILS_ENV"] ||= 'test'
+ENV["RAILS_ENV"] = 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
 require 'capybara/rspec'
 require 'capybara/poltergeist'
 require 'controllers/test_helpers'
@@ -99,7 +98,7 @@ end
 def create_test_admin
   @admin = User.where(email: "admin@twinenginelabs.com").first_or_create
   @admin.password = "password"
-  @admin.roles << Role.find_or_create_by_name('Admin')
+  @admin.roles << Role.where(name: 'Admin').first_or_create
   @admin.save(validate: false) if @admin.new_record?
   @admin
 end
@@ -111,7 +110,7 @@ end
 def create_test_user
   @user = User.where(email: "user@twinenginelabs.com").first_or_create
   @user.password = "password"
-  @user.roles << Role.find_or_create_by_name('User')
+  @user.roles << Role.where(name: 'User').first_or_create
   @user.save(validate: false) if @user.new_record?
   @user
 end

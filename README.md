@@ -1,22 +1,30 @@
 ## Setup
+    export TEL_RAILS_APPS_COMPOSER_RECIPE_PATH=/path/to/this/folder
+
+    # rvm
+    rvm install 2.1.2
     rvm gemset use <APP_NAME> --create
-    gem install rails
+
+    # rbenv
+    rbenv install 2.1.2
+    rbenv local 2.1.2
+
+    gem install rails -v 4.1.1
     gem install rails_apps_composer
-    export TEL_RAILS_APPS_COMPOSER_RECIPE_PATH=/path/to/your/recipes
 
 ## Examples
 
 Standard boilerplate based app (hosted on Digital Ocean):
 
-    rails_apps_composer new <APP_NAME> -l $TEL_RAILS_APPS_COMPOSER_RECIPE_PATH -r tel_boilerplate tel_rubber tel_rubber_digitalocean
+    rails_apps_composer new <APP_NAME> -q -l $TEL_RAILS_APPS_COMPOSER_RECIPE_PATH -d $TEL_RAILS_APPS_COMPOSER_RECIPE_PATH/defaults.yml -r tel_boilerplate tel_rubber tel_rubber_digitalocean
 
- Standard boilerplate based app (hosted on AWS) (TODO):
+Standard boilerplate based app (hosted on AWS) (TODO):
 
-    rails_apps_composer new <APP_NAME> -l $TEL_RAILS_APPS_COMPOSER_RECIPE_PATH -r tel_boilerplate tel_rubber tel_rubber_aws
+    rails_apps_composer new <APP_NAME> -q -l $TEL_RAILS_APPS_COMPOSER_RECIPE_PATH -d $TEL_RAILS_APPS_COMPOSER_RECIPE_PATH/defaults.yml -r tel_boilerplate tel_rubber tel_rubber_aws
 
 Standard boilerplate based app (hosted on Heroku) (TODO):
 
-    rails_apps_composer new <APP_NAME> -l $TEL_RAILS_APPS_COMPOSER_RECIPE_PATH -r tel_boilerplate tel_rubber tel_heroku
+    rails_apps_composer new <APP_NAME> -q -l $TEL_RAILS_APPS_COMPOSER_RECIPE_PATH -d $TEL_RAILS_APPS_COMPOSER_RECIPE_PATH/defaults.yml -r tel_boilerplate tel_rubber tel_heroku
 
 Custom app:
 

@@ -5,6 +5,7 @@ FileUtils.cp_r(Dir.glob("#{File.expand_path(@tel_recipe_path)}/tel_rubber/*"), '
 
 add_gem 'rubber'
 
+gsub_file "config/deploy.rb", /project_name/, "#{app_name}"
 gsub_file "config/rubber/rubber.yml", /project_name/, "#{app_name}"
 gsub_file "config/rubber/common/rubber.profile", /project_name/, "#{app_name}"
 gsub_file "config/rubber/role/nginx/unicorn_nginx.conf", /project_name/, "#{app_name}"

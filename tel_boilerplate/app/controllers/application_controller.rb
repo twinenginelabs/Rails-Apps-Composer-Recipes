@@ -1,45 +1,74 @@
 class ApplicationController < ActionController::Base
   include ApplicationHelper
-  
-  before_filter :authenticate_user!
-  before_filter :set_time_zone
-  
-  if defined?(CanCan)
-    rescue_from CanCan::AccessDenied, :with => :access_denied
+
+  protect_from_forgery with: :null_session, if: ->(controller) { controller.request.format == "application/json" }
+
+  before_action :authenticate_user_from_token!
+  before_action :authenticate_user!
+  before_action :set_time_zone
+
+  rescue_from(CanCan::AccessDenied) do |exception|
+    render_error :unauthorized, "Unauthorized to perform this action."
+  end
+
+  rescue_from(ActiveRecord::RecordNotFound)  do |exception|
+    render_error :bad_request, "Record was not found."
+  end
+
+  rescue_from(ActionController::ParameterMissing) do |exception|
+    render_error :bad_request, "Required parameter, \"#{exception.param}\", was not sent."
+  end
+
+  rescue_from(ActionDispatch::ParamsParser::ParseError) do |exception|
+    render_error :bad_request, "Invalid JSON body sent to server."
+  end
+
+  if !Rails.env.development?
+    rescue_from(Exception) do |exception|
+      notify_airbrake(exception)
+      render_error :bad_request, exception.message
+    end
   end
 
   def current_ability
     @current_ability ||= Ability.new(current_user)
   end
   
-  def set_time_zone
-    return false unless respond_to?(:current_user) && current_user
-    Time.zone = current_user.time_zone
+  protected
+
+  def render_error(status, message)
+    store_location
+
+    flash[:alert] = message
+
+    respond_to do |format|
+      format.html { redirect_to main_app.root_url }
+      format.json { render json: { error: message }, status: status }
+    end
   end
-  
+
+  def render_object_errors(object)
+    render json: { errors: object.errors.full_messages }, status: :unprocessable_entity
+  end
+
+  private
+
   def store_location
     session[:return_to] = request.base_url + request.path
   end
-  
-  def redirect_back_or_default(default='/')
-    if session[:return_to]
-      redirect_to(session[:return_to])
-    else
-      redirect_to(default)
+
+  def authenticate_user_from_token!
+    user_token = params[:authentication_token].presence
+    user = user_token && User.find_by_authentication_token(user_token)
+
+    if user
+      sign_in user, store: false
     end
   end
-  
-  protected
-  
-  def access_denied(exception)
-    store_location
-    
-    flash[:alert] = current_user ? exception.message : "#{exception.message} Please login."
-    
-    respond_to do |format|
-      format.html { redirect_to main_app.root_url }
-      format.json { render json: "Access Denied" }
-    end
+
+  def set_time_zone
+    return false unless respond_to?(:current_user) && current_user
+    Time.zone = current_user.time_zone
   end
   
 end

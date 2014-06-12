@@ -13,7 +13,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         if authentication
           authentication.update_attributes(:user_id => current_user.id)
         else
-          current_user.authentications.find_or_create_by_provider_and_uid(auth['provider'], auth['uid'])
+          current_user.authentications.(provider: auth['provider'], uid: auth['uid']).first_or_create
         end
       else
         if authentication && authentication.user
