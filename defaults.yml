@@ -1,3 +1,6 @@
+prefs:
+  :database: postgresql
+
 args:
   :skip_test_unit: true
   :skip_active_record: false

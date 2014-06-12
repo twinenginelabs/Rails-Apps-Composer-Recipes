@@ -1,1 +1,1 @@
-OmniAuth.config.full_host = "http://#{ProjectName::Application.config.host}"
+OmniAuth.config.full_host = "http://#{Rails.application.config.host}"

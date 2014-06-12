@@ -44,14 +44,21 @@ gem 'spring',        group: :development
 # ------- Boilerplate Defaults -------
 
 gem 'airbrake'
-gem 'rails_admin'
-gem 'devise'
-gem 'omniauth'
-gem 'cancan'
-gem 'paperclip'
-gem 'aws-sdk'
-gem 'unicorn'
+gem 'apipie-rails'
 gem 'asset_sync'
+gem 'aws-sdk'
+gem 'bubot'
+gem 'cancan'
+gem 'devise'
+gem 'newrelic_rpm'
+gem 'omniauth'
+gem 'paperclip'
+gem 'rails_admin'
+gem 'sidekiq'
+gem 'sinatra', :require => nil
+gem 'unicorn'
+gem 'versionist'
+gem 'whenever', :require => false
 
 group :development do
   gem 'letter_opener'
