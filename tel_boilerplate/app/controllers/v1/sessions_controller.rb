@@ -7,9 +7,9 @@ class V1::SessionsController < Devise::SessionsController
   end
 
   api :POST, "/users/sign_in", "Sign in"
-  param "(GameHawk) user", Hash, desc: "" do
-    param :login, String, desc: "(GameHawk) Email, username, or phone number"
-    param :password, String, desc: "(GameHawk) Password for login"
+  param "(ProjectName) user", Hash, desc: "" do
+    param :login, String, desc: "(ProjectName) Email, username, or phone number"
+    param :password, String, desc: "(ProjectName) Password for login"
   end
   param "(Social) provider", String, desc: "(Social) Name of the social network being used for login (only facebook supported at the moment)"
   param "(Social) token", String, desc: "(Social) The token supplied by the social network"
