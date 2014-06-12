@@ -23,6 +23,7 @@ class CreateUsers < ActiveRecord::Migration
 
       ## Database authenticatable
       t.string :email,              :null => false, :default => ""
+      t.string :phone_number
       t.string :encrypted_password, :null => false, :default => ""
 
       ## Recoverable

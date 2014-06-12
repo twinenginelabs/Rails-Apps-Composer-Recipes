@@ -54,6 +54,7 @@ gem 'newrelic_rpm'
 gem 'omniauth'
 gem 'paperclip'
 gem 'rails_admin'
+gem 'scoped_search'
 gem 'sidekiq'
 gem 'sinatra', :require => nil
 gem 'unicorn'
