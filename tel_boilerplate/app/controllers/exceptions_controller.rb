@@ -1,4 +1,4 @@
-class ExceptionsController < Spree::StoreController
+class ExceptionsController < ApplicationController
 
   def render_status
     @exception = env["action_dispatch.exception"]

@@ -5,6 +5,7 @@ web_tools_user: admin
 web_tools_password: "#{ENV['WEB_TOOLS_PASSWORD']}"
 timezone: US/Central
 domain: project-name.com
+instance_base_name: "#{Rubber.config.app_name.tr('_', '-')}-#{Rubber.env}"
 
 web_port: 80
 web_ssl_port: 443

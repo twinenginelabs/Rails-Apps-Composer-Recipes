@@ -22,35 +22,50 @@
 
 * Deployment instructions
 
-  1) Setup environment variables in rubber.profile
-  
-  2) Export those environment variables into your shell
-  
-  3) Ensure your digital ocean private key is in your authentication agent
-    The private key's name should match the result of doing a `whoami` in your terminal
-    => ssh-add ~/.ssh/digitalocean/nick
-  
-  4) Create the droplet
-    => RUBBER_ENV=staging ALIAS=staging ROLES=background_worker,common,db:primary=true,nginx,postgresql,postgresql_master,redis,redis_master,sidekiq,unicorn,web,app,whenever cap rubber:create
-    # If you have issues with create, and figure them out, run `RUBBER_ENV=staging cap rubber:refresh` to pick up where you left off.
-  
-  5) Rename the droplet via DigitalOcean UI
-    ie: staging-staging becomes <project name>-staging
-  
-  6) Setup the /etc/hosts aliases
-    => RUBBER_ENV=staging cap rubber:setup_remote_aliases
-  
-  7) Add the created instance-staging to source control
-    => git commit -am  "<commit message>"; git push
-  
-  8) Provision the server
-    => RUBBER_ENV=staging cap rubber:bootstrap
-  
-  9) Deploy
-    => RUBBER_ENV=staging cap deploy:migrations
-   
-  10) Wrap up
-    => ssh root@staging.<project name>.com
-      => ln -s /mnt/<project name>-staging/current app
-      => cd app
-      => bundle exec rake db:seed
+  * Provisioning
+
+    0) Create the S3 bucket
+      Make sure to use U.S. Standard as the region
+      Bucket name should be <project-name>-staging
+
+    1) Setup environment variables in rubber.profile
+    
+    2) Export those environment variables into your shell
+    
+    3) Ensure your digital ocean private key is in your authentication agent
+      The private key's name should match the result of doing a `whoami` in your terminal
+      => ssh-add ~/.ssh/digitalocean-<project-name>/<whoami>
+    
+    4) Create the server
+      => RUBBER_ENV=staging ALIAS=master ROLES=background_worker,common,db:primary=true,nginx,postgresql,postgresql_master,redis,redis_master,sidekiq,unicorn,web,app,whenever cap rubber:create
+      # If you have issues with create, and figure them out, run `RUBBER_ENV=staging cap rubber:refresh` to pick up where you left off.
+
+    5) Rename the droplet via DigitalOcean UI
+      ie: staging-master becomes <project-name>-staging-master
+    
+    6) Setup the /etc/hosts aliases
+      => RUBBER_ENV=staging cap rubber:setup_remote_aliases
+    
+    7) Add the created instance-staging to source control
+      => git commit -am  "<commit message>"; git push
+    
+    8) Provision the server
+      => RUBBER_ENV=staging cap rubber:bootstrap
+    
+    9) Deploy
+      => RUBBER_ENV=staging cap deploy:migrations
+     
+    10) Wrap up
+      => ssh root@staging.<project name>.com
+        => ln -s /mnt/<project_name>-staging/current app
+        => cd app
+        => bundle exec rake db:seed
+
+  * Adding a user with deploy rights
+
+    1) Have them create an ssh key @ ~/.ssh/digitalocean-<project-name>/<whoami>
+
+    2) Have them upoad that ssh key to Digitial Ocean with the same name
+
+    3) SSH into the box and add their public ssh key to the authorized keys
+      => ~/.ssh/authorized_keys
