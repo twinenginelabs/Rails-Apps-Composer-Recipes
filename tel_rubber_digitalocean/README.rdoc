@@ -1,0 +1,55 @@
+== README
+
+* Ruby version
+
+* System dependencies
+
+* Configuration
+
+* Database creation
+  
+  rake db:create db:migrate
+
+* Database initialization
+
+  rake db:seed
+
+* How to run the test suite
+
+  rspec
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+  1) Setup environment variables in rubber.profile
+  
+  2) Export those environment variables into your shell
+  
+  3) Ensure your digital ocean private key is in your authentication agent
+    The private key's name should match the result of doing a `whoami` in your terminal
+    => ssh-add ~/.ssh/digitalocean/nick
+  
+  4) Create the droplet
+    => RUBBER_ENV=staging ALIAS=staging ROLES=background_worker,common,db:primary=true,nginx,postgresql,postgresql_master,redis,redis_master,sidekiq,unicorn,web,app,whenever cap rubber:create
+  
+  5) Rename the droplet via DigitalOcean UI
+    ie: staging-staging becomes <project name>-staging
+  
+  6) Setup the /etc/hosts aliases
+    => RUBBER_ENV=staging cap rubber:setup_remote_aliases
+  
+  7) Add the created instance-staging to source control
+    => git commit -am  "<commit message>"; git push
+  
+  8) Provision the server
+    => RUBBER_ENV=staging cap rubber:bootstrap
+  
+  9) Deploy
+    => RUBBER_ENV=staging cap deploy:migrations
+   
+  10) Wrap up
+    => ssh root@staging.<project name>.com
+      => ln -s /mnt/<project name>-staging/current app
+      => cd app
+      => bundle exec rake db:seed

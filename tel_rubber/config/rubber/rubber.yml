@@ -4,7 +4,7 @@ admin_email: "root@#{full_host}"
 web_tools_user: admin
 web_tools_password: "#{ENV['WEB_TOOLS_PASSWORD']}"
 timezone: US/Central
-domain: project_name.com
+domain: project-name.com
 
 web_port: 80
 web_ssl_port: 443

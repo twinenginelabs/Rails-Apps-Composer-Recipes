@@ -5,7 +5,7 @@ cloud_providers:
     image_id: Ubuntu 12.04 x64
     client_key: "#{ENV['DIGITAL_OCEAN_CLIENT_ID']}"
     api_key: "#{ENV['DIGITAL_OCEAN_API_KEY']}"
-    key_dir: "#{(File.expand_path('~') rescue '/root') + '/.ssh/digitalocean-project_name' }"
+    key_dir: "#{(File.expand_path('~') rescue '/root') + '/.ssh/digitalocean-project-name' }"
     key_name: "#{`whoami`.chomp}"
     key_file: "#{Dir[key_dir + '/*' + key_name].first}"
 environments:

@@ -14,7 +14,7 @@ if ["staging", "production"].include?(Rubber.env) && !ENV["NO_SCM"]
   set :deploy_via, :remote_cache
   set :git_enable_submodules, true
   set :branch, :master
-  set :repository, "git@bitbucket.org:TwinEngineLabs/project_name-api.git"
+  set :repository, "git@bitbucket.org:TwinEngineLabs/project-name-api.git"
 else
   set :scm, :none
   set :repository, "."

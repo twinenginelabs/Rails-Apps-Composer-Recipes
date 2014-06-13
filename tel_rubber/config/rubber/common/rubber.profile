@@ -14,5 +14,5 @@ export DIGITAL_OCEAN_CLIENT_ID=
 export DIGITAL_OCEAN_API_KEY=
 export AWS_ACCESS_KEY_ID=
 export AWS_SECRET_ACCESS_KEY=
-export FOG_DIRECTORY=project_name-<%= Rubber.env.downcase %>
+export FOG_DIRECTORY=project-name-<%= Rubber.env.downcase %>
 export FOG_PROVIDER=AWS

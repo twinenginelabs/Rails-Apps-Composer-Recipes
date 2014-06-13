@@ -4,6 +4,10 @@ raise "You must define TEL_RAILS_APPS_COMPOSER_RECIPE_PATH in order to use this 
 FileUtils.cp_r(Dir.glob("#{File.expand_path(@tel_recipe_path)}/tel_boilerplate/*"), '.')
 
 Dir.glob("**/*").reject { |file| File.directory?(file) }.each do |file|
+  gsub_file file, /project_name/, "#{app_name}"
+end
+
+Dir.glob("**/*").reject { |file| File.directory?(file) }.each do |file|
   gsub_file file, /ProjectName/, "#{app_name.camelize}"
 end
 
@@ -16,7 +20,7 @@ Dir.glob("**/*").reject { |file| File.directory?(file) }.each do |file|
 end
 
 Dir.glob("**/*").reject { |file| File.directory?(file) }.each do |file|
-  gsub_file file, /project_name/, "#{app_name}"
+  gsub_file file, /project-name/, "#{app_name.dasherize}"
 end
 
 gsub_file "Gemfile", /RUBY_VERSION/, "#{RUBY_VERSION}"
@@ -53,7 +57,7 @@ end
 
 insert_into_file "config/environments/production.rb", after: "Rails.application.configure do\n" do
   <<-EOS
-  config.host = "#{app_name}.com"
+  config.host = "#{app_name.dasherize}.com"
   config.action_mailer.default_url_options = { :host => config.host }
 
   EOS
@@ -61,7 +65,7 @@ end
 
 insert_into_file "config/environments/staging.rb", after: "Rails.application.configure do\n" do
   <<-EOS
-  config.host = "#{app_name}.twinenginelabs.com"
+  config.host = "#{app_name.dasherize}.twinenginelabs.com"
   config.action_mailer.default_url_options = { :host => config.host }
 
   EOS
