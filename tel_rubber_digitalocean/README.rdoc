@@ -28,7 +28,7 @@
       Make sure to use U.S. Standard as the region
       Bucket name should be <project-name>-staging
 
-    1) Setup environment variables in rubber.profile
+    1) Setup missing environment variables in rubber.profile
     
     2) Export those environment variables into your shell
     
