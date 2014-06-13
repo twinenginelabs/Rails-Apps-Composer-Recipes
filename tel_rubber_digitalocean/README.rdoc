@@ -32,6 +32,7 @@
   
   4) Create the droplet
     => RUBBER_ENV=staging ALIAS=staging ROLES=background_worker,common,db:primary=true,nginx,postgresql,postgresql_master,redis,redis_master,sidekiq,unicorn,web,app,whenever cap rubber:create
+    # If you have issues with create, and figure them out, run `RUBBER_ENV=staging cap rubber:refresh` to pick up where you left off.
   
   5) Rename the droplet via DigitalOcean UI
     ie: staging-staging becomes <project name>-staging

@@ -8,6 +8,7 @@ add_gem 'rubber'
 gsub_file "config/deploy.rb", /project-name/, "#{app_name.dasherize}"
 gsub_file "config/rubber/rubber.yml", /project_name/, "#{app_name}"
 gsub_file "config/rubber/rubber.yml", /project-name/, "#{app_name.dasherize}"
+gsub_file "config/rubber/rubber-ruby.yml", /RUBY_VERSION/, "#{RUBY_VERSION}"
 gsub_file "config/rubber/common/rubber.profile", /project-name/, "#{app_name.dasherize}"
 gsub_file "config/rubber/role/nginx/unicorn_nginx.conf", /project-name/, "#{app_name.dasherize}"
 
