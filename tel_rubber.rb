@@ -3,7 +3,7 @@ raise "You must define TEL_RAILS_APPS_COMPOSER_RECIPE_PATH in order to use this 
 
 FileUtils.cp_r(Dir.glob("#{File.expand_path(@tel_recipe_path)}/tel_rubber/*"), '.')
 
-add_gem 'rubber'
+add_gem 'rubber', '~> 2.8.0'
 
 gsub_file "config/deploy.rb", /project-name/, "#{app_name.dasherize}"
 gsub_file "config/rubber/rubber.yml", /project_name/, "#{app_name}"
