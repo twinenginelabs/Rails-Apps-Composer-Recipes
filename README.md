@@ -1,6 +1,6 @@
 ## Setup
     export TEL_RAILS_APPS_COMPOSER_RECIPE_PATH=/path/to/this/folder
-
+    
     # rvm
     rvm install 2.1.2
     rvm gemset use <app_name> --create

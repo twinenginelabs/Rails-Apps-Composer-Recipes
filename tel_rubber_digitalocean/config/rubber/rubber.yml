@@ -8,6 +8,9 @@ cloud_providers:
     key_dir: "#{(File.expand_path('~') rescue '/root') + '/.ssh/digitalocean-project-name' }"
     key_name: "#{`whoami`.chomp}"
     key_file: "#{Dir[key_dir + '/*' + key_name].first}"
+  aws:
+    access_key: "#{ENV['AWS_ACCESS_KEY_ID']}"
+    secret_access_key: "#{ENV['AWS_SECRET_ACCESS_KEY']}"
 environments:
   staging:
     cloud_providers:
@@ -19,3 +22,5 @@ environments:
       digital_ocean:
         image_type: 2GB
     unicorn_worker_count: 6
+
+backup_bucket: "project-name-backups"

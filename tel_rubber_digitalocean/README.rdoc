@@ -37,7 +37,7 @@
       => ssh-add ~/.ssh/digitalocean-<project-name>/<whoami>
     
     4) Create the server
-      => RUBBER_ENV=staging ALIAS=master ROLES=background_worker,common,db:primary=true,nginx,postgresql,postgresql_master,redis,redis_master,sidekiq,unicorn,web,app,whenever cap rubber:create
+      => RUBBER_ENV=staging ALIAS=staging-master ROLES=background_worker,common,db:primary=true,nginx,postgresql,postgresql_master,redis,redis_master,sidekiq,unicorn,web,app,whenever cap rubber:create
       # If you have issues with create, and figure them out, run `RUBBER_ENV=staging cap rubber:refresh` to pick up where you left off.
 
     5) Rename the droplet via DigitalOcean UI
@@ -56,7 +56,7 @@
       => RUBBER_ENV=staging cap deploy:migrations
      
     10) Wrap up
-      => ssh root@staging.<project name>.com
+      => ssh root@staging-master.<project name>.com
         => ln -s /mnt/<project_name>-staging/current app
         => cd app
         => bundle exec rake db:seed
