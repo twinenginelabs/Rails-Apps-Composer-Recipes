@@ -11,8 +11,13 @@ MAILTO=<%= rubber_env.admin_email %>
 # don't need to set RUBBER_ENV for each script since we set it for all cron here
 RUBBER_ENV=<%= Rubber.env %>
 RAILS_ENV=<%= Rubber.env %>
+
+<% if rubber_env.cloud_providers.aws.access_key && !rubber_env.cloud_providers.aws.access_key.empty? %>
 AWS_ACCESS_KEY_ID=<%= rubber_env.cloud_providers.aws.access_key %>
+<% end %>
+<% if rubber_env.cloud_providers.aws.secret_access_key && !rubber_env.cloud_providers.aws.secret_access_key.empty? %>
 AWS_SECRET_ACCESS_KEY=<%= rubber_env.cloud_providers.aws.secret_access_key %>
+<% end %>
 
 # Roll all rails logs at midnight
 0 0 * * * <%= Rubber.root %>/script/rubber cron --task util:rotate_logs --directory=<%= Rubber.root %>/log
