@@ -1,6 +1,8 @@
 @tel_recipe_path = ENV['TEL_RAILS_APPS_COMPOSER_RECIPE_PATH']
 raise "You must define TEL_RAILS_APPS_COMPOSER_RECIPE_PATH in order to use this recipe" if @tel_recipe_path.blank?
 
+FileUtils.cp("#{File.expand_path(@tel_recipe_path)}/tel_rubber_digitalocean/README.rdoc", ".")
+
 append_to_file "config/rubber/rubber.yml", "\n\n# --- Digital Ocean ---\n\n"
 append_to_file "config/rubber/rubber.yml", File.read("#{File.expand_path(@tel_recipe_path)}/tel_rubber_digitalocean/config/rubber/rubber.yml")
 

@@ -38,8 +38,6 @@ class V1::SessionsController < Devise::SessionsController
         self.resource.update_attribute(:device_token, params[:device_token])
 
         sign_in(resource_name, resource)
-
-        PullSocialData.perform_async(resource.id)
       }
     end
   end
