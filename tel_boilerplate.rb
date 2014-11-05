@@ -43,11 +43,14 @@ insert_into_file "config/application.rb", after: "class Application < Rails::App
 
     config.time_zone = 'Central Time (US & Canada)'
 
-    config.generators do |g|
-      g.integration_tool false
-      g.performance_tool false
-      g.helper false
-      g.test_framework :rspec,
+    config.generators do |generator|
+      generator.scaffold_controller :scaffold_controller
+      generator.template_engine :jbuilder
+      generator.integration_tool false
+      generator.performance_tool false
+      generator.assets false
+      generator.helper false
+      generator.test_framework :rspec,
         view_specs: false,
         routing_specs: false
     end
