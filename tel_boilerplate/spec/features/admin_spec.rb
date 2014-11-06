@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe "Admin", :type => :feature do
+RSpec.describe "Admin", :type => :feature do
 
   context "as a logged out user/admin" do
 

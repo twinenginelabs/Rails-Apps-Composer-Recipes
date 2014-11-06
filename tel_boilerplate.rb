@@ -2,6 +2,7 @@
 raise "You must define TEL_RAILS_APPS_COMPOSER_RECIPE_PATH in order to use this recipe" if @tel_recipe_path.blank?
 
 FileUtils.cp_r(Dir.glob("#{File.expand_path(@tel_recipe_path)}/tel_boilerplate/*"), '.')
+FileUtils.cp("#{File.expand_path(@tel_recipe_path)}/tel_boilerplate/.rspec", ".")
 
 Dir.glob("**/*").reject { |file| File.directory?(file) }.each do |file|
   gsub_file file, /project_name/, "#{app_name}"
@@ -36,10 +37,10 @@ insert_into_file "config/application.rb", after: "class Application < Rails::App
       "#{app_name.titleize}"
     end
 
-    require "\#{config.root}/lib/possessive"
+    require "\#{config.root}/lib/extensions/possessive"
 
     config.paths["config/routes.rb"].concat Dir[Rails.root.join("config/routes/*.rb")]
-    config.autoload_paths += %W(\#{config.root}/lib)
+    config.autoload_paths += %W(\#{config.root}/lib/controllers)
 
     config.time_zone = 'Central Time (US & Canada)'
 

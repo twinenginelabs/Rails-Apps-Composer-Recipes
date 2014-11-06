@@ -8,7 +8,11 @@ class ApplicationController < ActionController::Base
   before_action :set_time_zone
 
   rescue_from(CanCan::AccessDenied) do |exception|
-    render_error :unauthorized, "Unauthorized to perform this action."
+    if current_user
+      render_error :unauthorized, "Unauthorized to perform this action."
+    else
+      redirect_to main_app.new_user_session_url
+    end
   end
 
   rescue_from(ActiveRecord::RecordNotFound)  do |exception|

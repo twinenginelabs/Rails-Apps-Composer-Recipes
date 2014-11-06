@@ -5,7 +5,7 @@ module Feature
       visit "/users/sign_in"
       within("#new_user") do
         fill_in "Email", with: email || test_user.email
-        fill_in "Password", with: password || "password"
+        fill_in "Password", with: password || "twin1234"
         click_on "Sign in"
       end
     end
