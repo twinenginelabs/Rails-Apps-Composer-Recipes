@@ -1,0 +1,24 @@
+cloud_provider: aws
+cloud_providers:
+  aws:
+    region: us-east-1
+    account: "#{ENV['AWS_ACCOUNT_ID']}"
+    access_key: "#{ENV['AWS_ACCESS_KEY_ID']}"
+    secret_access_key: "#{ENV['AWS_SECRET_ACCESS_KEY']}"
+    key_dir: "#{(File.expand_path('~') rescue '/root') + '/.ssh/aws' }"
+    key_name: project-name
+    key_file: "#{Dir[key_dir + '/' + key_name + '.pem'].first}"
+    image_id: ami-ecda6c84
+environments:
+  staging:
+    cloud_providers:
+      aws:
+        image_type: m3.medium
+    unicorn_worker_count: 5
+  production:
+    cloud_providers:
+      aws:
+        image_type: m3.large
+    unicorn_worker_count: 15
+
+backup_bucket: "project-name-backups"

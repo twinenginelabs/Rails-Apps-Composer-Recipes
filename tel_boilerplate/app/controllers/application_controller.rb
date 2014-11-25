@@ -5,7 +5,8 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user_from_token!
   before_action :authenticate_user!
-  before_action :set_time_zone
+  before_action :redirect_admin
+  around_action :set_time_zone
 
   rescue_from(CanCan::AccessDenied) do |exception|
     if current_user
@@ -70,9 +71,24 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def set_time_zone
-    return false unless respond_to?(:current_user) && current_user
-    Time.zone = current_user.time_zone
+  def redirect_admin
+    if current_user && current_user.admin? && !rails_admin_controller? && !devise_controller?
+      redirect_to rails_admin.dashboard_path
+    end
+  end
+
+  def set_time_zone(&block)
+    time_zone = if request.cookies["time_zone"]
+      ActiveSupport::TimeZone[-request.cookies["time_zone"].to_i.minutes]
+    else
+      current_user.try(:time_zone) || "UTC"
+    end
+
+    Time.use_zone(time_zone, &block)
+  end
+
+  def rails_admin_controller?
+    is_a?(RailsAdmin::MainController)
   end
   
 end

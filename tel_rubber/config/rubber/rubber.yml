@@ -1,16 +1,12 @@
 app_name: project_name
 app_user: root
 admin_email: "root@#{full_host}"
-web_tools_user: admin
-web_tools_password: "#{ENV['WEB_TOOLS_PASSWORD']}"
 timezone: US/Central
 domain: project-name.com
 instance_base_name: "#{app_name.tr('_', '-')}-#{env}"
 
 web_port: 80
 web_ssl_port: 443
-web_tools_port: 8080
-web_tools_ssl_port: 8443
 
 security_groups:
   default:
@@ -33,28 +29,15 @@ security_groups:
         from_port: "#{web_ssl_port}"
         to_port: "#{web_ssl_port}"
         source_ips: [0.0.0.0/0]
-  web_tools:
-    description: "To open up port #{web_tools_port}/#{web_tools_ssl_port} for internal/tools http server"
-    rules:
-      - protocol: tcp
-        from_port: "#{web_tools_port}"
-        to_port: "#{web_tools_port}"
-        source_ips: [0.0.0.0/0]
-      - protocol: tcp
-        from_port: "#{web_tools_ssl_port}"
-        to_port: "#{web_tools_ssl_port}"
-        source_ips: [0.0.0.0/0]
 
 assigned_security_groups: [default]
 roles:
   web:
     assigned_security_groups: [web]
-  web_tools:
-    assigned_security_groups: [web_tools]
 
-auto_security_groups: true
-isolate_security_groups: true
-prompt_for_security_group_sync: true
+auto_security_groups: false
+isolate_security_groups: false
+prompt_for_security_group_sync: false
 packages: [
   postfix, build-essential, git-core, libxslt-dev, ntp,
   screen, htop, imagemagick, libmagickwand-dev, nodejs
