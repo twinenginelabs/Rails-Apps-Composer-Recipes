@@ -15,12 +15,14 @@ PAPERCLIP_STORAGE_OPTIONS = if Rails.env.staging? || Rails.env.production?
   name = ProjectName::Application.name.downcase.gsub(/ /, "_") # underscore ?
   {
     :storage => :s3,
+    :s3_host_name => "s3-us-east-1.amazonaws.com",
     :s3_credentials => {
       :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
       :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'],
-      :bucket => ENV['FOG_DIRECTORY'],
+      :bucket => ENV['FOG_DIRECTORY']
     },
-    :path => "#{name}/:class/:attachment/:id_partition/:style/:hash.:extension"
+    :path => "#{name}/:class/:attachment/:id_partition/:style/:hash.:extension",
+    :url => ":s3_domain_url"
   }
 else
   {
