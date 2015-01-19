@@ -30,15 +30,7 @@
     <!-- end Top Bar -->
 
     <div class="container" style="padding-top: 10px;">
-      <% flash.each do |type, message| %>
-        <div class="row">
-          <div class="span12 well alert-message <%= type %>" data-alert="alert">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <p><%= message %></p>
-          </div>
-        </div>
-        <% flash.delete(type) %>
-      <% end %>
+      <%= flash_messages %>
       
       <div class="container">
         <div class="row">

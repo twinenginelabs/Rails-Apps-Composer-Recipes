@@ -7,7 +7,7 @@ end
 
 PAPERCLIP_OPTIONS = {
   :hash_secret => "B6692AD1-87A6-4792-9B7D-3AF38864486D",
-  :default_url => "http://placehold.it/:style",
+  :default_url => "http://placehold.it/150x150",
   :processors  => [:thumbnail]
 }
 
@@ -15,7 +15,7 @@ PAPERCLIP_STORAGE_OPTIONS = if Rails.env.staging? || Rails.env.production?
   name = ProjectName::Application.name.downcase.gsub(/ /, "_") # underscore ?
   {
     :storage => :s3,
-    :s3_host_name => "s3-us-east-1.amazonaws.com",
+    :s3_host_name => "s3.amazonaws.com",
     :s3_credentials => {
       :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
       :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'],

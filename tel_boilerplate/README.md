@@ -2,7 +2,7 @@
 
 * Ruby version
 
-  2.1.4
+  2.2.0
 
 * System dependencies
 
@@ -12,7 +12,9 @@
 
 * Database creation/initialization
 
-  bundle exec rake db:setup
+  bundle exec rake db:create
+  bundle exec rake db:migrate
+  bundle exec rake db:seed
   bundle exec rails s
 
 * How to run the test suite

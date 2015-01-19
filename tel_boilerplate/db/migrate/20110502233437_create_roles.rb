@@ -4,6 +4,7 @@ class CreateRoles < ActiveRecord::Migration
       t.string :name
 
       t.timestamps
+      t.datetime :deleted_at
     end
   end
 

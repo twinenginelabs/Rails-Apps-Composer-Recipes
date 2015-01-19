@@ -17,6 +17,7 @@
   5) Create the server
     => RUBBER_ENV=staging ALIAS=staging-master ROLES=background_worker,common,db:primary=true,nginx,postgresql,postgresql_master,redis,redis_master,sidekiq,unicorn,web,app,whenever cap rubber:create
     # If you have issues with create, and figure them out, run `RUBBER_ENV=staging cap rubber:refresh` to pick up where you left off.
+    # A common issue is that a past IP address in your ~/.ssh/known_hosts is conflicting with the new droplet's IP address since Digital Ocean resuses released IPs. Remove the offending line.
 
   6) Rename the droplet via DigitalOcean UI
     ie: staging-master becomes <project-name>-staging-master or domain-name.com (if you want the PTR Record)

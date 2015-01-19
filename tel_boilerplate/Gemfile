@@ -5,7 +5,7 @@ ruby 'RUBY_VERSION'
 # ------- Rails Defaults -------
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.7'
+gem 'rails', '4.2.0'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use SCSS for stylesheets
@@ -41,19 +41,19 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-# ------- Boilerplate Defaults -------
+# ------- Additional -------
 
 gem 'airbrake'
-gem 'apipie-rails'
 gem 'asset_sync'
 gem 'aws-sdk'
-gem 'bubot'
 gem 'cancan'
 gem 'devise'
 gem 'newrelic_rpm'
 gem 'omniauth'
 gem 'paperclip'
-gem 'rails_admin'
+gem 'paper_trail'
+gem 'paranoia'
+gem 'rails_admin', '0.6.5' # 0.6.6 breaks layout a bit with its Bootstrap 3 upgrade.
 gem 'scoped_search'
 gem 'sidekiq'
 gem 'sinatra', :require => nil
@@ -63,10 +63,12 @@ gem 'whenever', :require => false
 
 group :development do
   gem 'letter_opener'
+  gem 'rails-erd'
 end
 
 group :development, :test do
   gem 'pry-rails'
+  gem 'dotenv-rails'
 end
 
 group :test do
@@ -76,5 +78,3 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_girl_rails'
 end
-
-# Additonal

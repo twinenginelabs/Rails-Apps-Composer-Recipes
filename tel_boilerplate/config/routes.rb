@@ -4,23 +4,15 @@ ProjectName::Application.routes.draw do
   
   # ------- App -------
 
-  root :controller => "pages", :action => "home"
+  root controller: "pages", action: "home"
 
-  devise_for :users, :controllers => { :registrations => "v1/registrations", :sessions => "v1/sessions" }
+  devise_for :users, :controllers => { registrations: "v1/registrations", sessions: "v1/sessions" }
   
-  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
   authenticate :user, ->(user) { user.role? :admin } do
     mount Sidekiq::Web => '/sidekiq'
   end
-
-  get '/404', :to => "exceptions#render_status"
-  get '/422', :to => "exceptions#render_status"
-  get '/500', :to => "exceptions#render_status"
-
-  # ------- Pulse -------
-  
-  get "/pulse" => "pulse#pulse"
   
   # ------- API -------
   
@@ -28,8 +20,12 @@ ProjectName::Application.routes.draw do
 
   end
 
-  # ------- API Documentation -------
+  # ------- Pulse -------
+  
+  get "/pulse" => "pulse#pulse"
 
-  apipie
+  # ------- 404s -------
+
+  match "*any", to: "application#routing_error", via: :all
   
 end

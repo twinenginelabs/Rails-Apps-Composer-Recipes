@@ -30,4 +30,12 @@ en:
         alert: '%{resource_name} could not be updated.'
       destroy:
         notice: '%{resource_name} was successfully destroyed.'
-        alert: '%{resource_name} could not be destroyed.'  
+        alert: '%{resource_name} could not be destroyed.'
+  errors:
+    server_error: "We're sorry, but something went wrong."
+    parse_error: "We're sorry, but invalid JSON was sent to the server."
+    parameter_missing: "We're sorry, but the required parameter, '%{parameter}', was not sent."
+    record_not_found: "We're sorry, but the page you were looking for doesn't exist."
+    routing_error: "We're sorry, but the page you were looking for doesn't exist."
+    not_authorized: "Unauthorized to perform this action."
+    not_enrolled: "You must be enrolled in this course to access that page."

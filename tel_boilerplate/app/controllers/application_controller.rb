@@ -8,48 +8,62 @@ class ApplicationController < ActionController::Base
   before_action :redirect_admin
   around_action :set_time_zone
 
-  rescue_from(CanCan::AccessDenied) do |exception|
-    if current_user
-      render_error :unauthorized, "Unauthorized to perform this action."
-    else
-      redirect_to main_app.new_user_session_url
-    end
-  end
+  rescue_from(Exception) do |exception|
+    notify_airbrake(exception)
+    render_error :internal_server_error, Rails.env.production? ? I18n.t("errors.server_error") : exception.message
+  end unless Rails.env.development?
 
-  rescue_from(ActiveRecord::RecordNotFound)  do |exception|
-    render_error :bad_request, "Record was not found."
+  rescue_from(ActionDispatch::ParamsParser::ParseError) do |exception|
+    render_error :bad_request, I18n.t("errors.parse_error")
   end
 
   rescue_from(ActionController::ParameterMissing) do |exception|
-    render_error :bad_request, "Required parameter, \"#{exception.param}\", was not sent."
+    render_error :bad_request, I18n.t("errors.parameter_missing", parameter: exception.param)
   end
 
-  rescue_from(ActionDispatch::ParamsParser::ParseError) do |exception|
-    render_error :bad_request, "Invalid JSON body sent to server."
+  rescue_from(ActiveRecord::RecordNotFound)  do |exception|
+    render_error :not_found, I18n.t("errors.record_not_found")
   end
 
-  if !Rails.env.development?
-    rescue_from(Exception) do |exception|
-      notify_airbrake(exception)
-      render_error :bad_request, exception.message
+  rescue_from(ActionController::RoutingError) do |exception|
+    render_error :not_found, I18n.t("errors.routing_error")
+  end
+
+  rescue_from(CanCan::AccessDenied) do |exception|
+    if current_user
+      render_error :unauthorized, I18n.t("errors.not_authorized")
+    else
+      redirect_to main_app.new_user_session_url
     end
   end
 
   def current_ability
     @current_ability ||= Ability.new(current_user)
   end
+
+  def routing_error
+    raise ActionController::RoutingError.new("No route matches #{params[:unmatched_route]}")
+  end
   
   protected
+
+  def redirect_to_back_or_default(default = root_url)
+    if request.env["HTTP_REFERER"].present? and request.env["HTTP_REFERER"] != request.env["REQUEST_URI"]
+      redirect_to :back
+    else
+      redirect_to default
+    end
+  end
 
   def render_error(status, message)
     store_location
 
-    flash[:alert] = message
-
     respond_to do |format|
-      format.html { redirect_to main_app.root_url }
-      format.json { render json: { error: message }, status: status }
+      format.html { render "errors/status", locals: { message: message }, status: status, layout: "application" }
+      format.json { render json: { message: message }, status: status }
     end
+  rescue ActionController::UnknownFormat
+    render status: status, text: message
   end
 
   def render_object_errors(object)
@@ -58,10 +72,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def store_location
-    session[:return_to] = request.base_url + request.path
-  end
-
   def authenticate_user_from_token!
     user_token = params[:authentication_token].presence
     user = user_token && User.find_by_authentication_token(user_token)
@@ -69,6 +79,10 @@ class ApplicationController < ActionController::Base
     if user
       sign_in user, store: false
     end
+  end
+
+  def store_location
+    session[:return_to] = request.base_url + request.path
   end
 
   def redirect_admin

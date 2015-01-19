@@ -2,39 +2,43 @@
 namespace :rubber do
 
   namespace :unicorn do
-  
+
     rubber.allow_optional_tasks(self)
-    
+
     before "deploy:stop", "rubber:unicorn:stop"
     after "deploy:start", "rubber:unicorn:start"
-    after "deploy:restart", "rubber:unicorn:reload"
-    
+    after "deploy:restart", "rubber:unicorn:upgrade"
+
     desc "Stops the unicorn server"
     task :stop, :roles => :unicorn do
-      rsudo "if [ -f /var/run/unicorn.pid ]; then pid=`cat /var/run/unicorn.pid` && kill -TERM $pid; fi"
+      rsudo "service unicorn stop"
     end
-    
+
     desc "Starts the unicorn server"
     task :start, :roles => :unicorn do
-      rsudo "cd #{current_path} && bundle exec unicorn_rails -c #{current_path}/config/unicorn.rb -E #{Rubber.env} -D"
+      rsudo "service unicorn start"
     end
-    
+
     desc "Restarts the unicorn server"
     task :restart, :roles => :unicorn do
-      stop
-      start
+      rsudo "service unicorn restart"
     end
-  
+
     desc "Reloads the unicorn web server"
-    task :reload, :roles => :unicorn do
-      rsudo "if [ -f /var/run/unicorn.pid ]; then pid=`cat /var/run/unicorn.pid` && kill -USR2 $pid; else cd #{current_path} && bundle exec unicorn_rails -c #{current_path}/config/unicorn.rb -E #{Rubber.env} -D; fi"
+    task :upgrade, :roles => :unicorn do
+      rsudo "service unicorn upgrade"
+    end
+
+    desc "Forcefully kills the unicorn server"
+    task :kill, :roles => :unicorn do
+      rsudo "service unicorn kill"
     end
 
     desc "Display status of the unicorn web server"
     task :status, :roles => :unicorn do
-      # "service unicorn status" always returns "unicorn stop/waiting"
+      rsudo "service unicorn status || true"
       rsudo "ps -eopid,user,cmd | grep [u]nicorn || true"
-      rsudo "netstat -tupan | grep unicorn || true"
+      # rsudo "netstat -tupan | grep unicorn || true"
     end
 
   end

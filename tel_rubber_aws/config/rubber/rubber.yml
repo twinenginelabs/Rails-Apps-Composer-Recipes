@@ -8,7 +8,7 @@ cloud_providers:
     key_dir: "#{(File.expand_path('~') rescue '/root') + '/.ssh/aws' }"
     key_name: project-name
     key_file: "#{Dir[key_dir + '/' + key_name + '.pem'].first}"
-    image_id: ami-ecda6c84
+    image_id: ami-92f569fa
 environments:
   staging:
     cloud_providers:

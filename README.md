@@ -2,14 +2,18 @@
     export TEL_RAILS_APPS_COMPOSER_RECIPE_PATH=/path/to/this/folder
     
     # rvm
-    rvm install 2.1.4
+    rvm install 2.2.0
     rvm gemset use <app_name> --create
 
     # rbenv
-    rbenv install 2.1.4
-    rbenv local 2.1.4
+    rbenv install 2.2.0
+    rbenv local 2.2.0
 
-    gem install rails -v 4.1.7
+    # chruby
+    ruby-install ruby 2.2.0
+    chruby 2.2.0
+
+    gem install rails -v 4.2.0
     gem install rails_apps_composer
 
 ## Examples

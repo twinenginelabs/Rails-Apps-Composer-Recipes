@@ -2,12 +2,13 @@ cloud_provider: digital_ocean
 cloud_providers:
   digital_ocean:
     region: New York 2
-    image_id: 12.04.5 x64
+    image_id: 14.04 x64
     client_key: "#{ENV['DIGITAL_OCEAN_CLIENT_ID']}"
     api_key: "#{ENV['DIGITAL_OCEAN_API_KEY']}"
     key_dir: "#{(File.expand_path('~') rescue '/root') + '/.ssh/digitalocean-project-name' }"
     key_name: "#{`whoami`.chomp}"
     key_file: "#{Dir[key_dir + '/*' + key_name].first}"
+    private_networking: false
   aws:
     access_key: "#{ENV['AWS_ACCESS_KEY_ID']}"
     secret_access_key: "#{ENV['AWS_SECRET_ACCESS_KEY']}"
