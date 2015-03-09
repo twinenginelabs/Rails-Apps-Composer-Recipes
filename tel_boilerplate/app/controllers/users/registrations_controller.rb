@@ -1,6 +1,8 @@
-class V1::RegistrationsController < Devise::RegistrationsController
+class Users::RegistrationsController < Devise::RegistrationsController
 
-  before_action :configure_permitted_parameters, if: :devise_controller?
+  respond_to :json
+
+  before_action :configure_permitted_parameters
 
   def create
     respond_to do |format|
@@ -11,8 +13,8 @@ class V1::RegistrationsController < Devise::RegistrationsController
         build_resource(sign_up_params)
 
         if resource.save
-          resource.update_attribute(:device_token, params[:device_token])
           sign_up(resource_name, resource)
+          render "users/me"
         else
           render_object_errors(resource)
         end
@@ -23,7 +25,7 @@ class V1::RegistrationsController < Devise::RegistrationsController
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up).concat([])
+    devise_parameter_sanitizer.for(:sign_up).push(:name, :username)
   end
 
 end

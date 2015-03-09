@@ -40,7 +40,7 @@ isolate_security_groups: false
 prompt_for_security_group_sync: false
 packages: [
   postfix, build-essential, git-core, libxslt-dev, ntp,
-  screen, htop, imagemagick, libmagickwand-dev, nodejs
+  screen, htop, imagemagick, libmagickwand-dev, nodejs, ruby-dev
 ]
 gems: [open4, aws-s3, bundler, [rubber, "#{Rubber.version}"]]
 stop_on_error_cmd: "function error_exit { exit 99; }; trap error_exit ERR"

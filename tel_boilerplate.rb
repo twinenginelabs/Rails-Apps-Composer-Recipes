@@ -29,7 +29,7 @@ end
 gsub_file "Gemfile", /RUBY_VERSION/, "#{RUBY_VERSION}"
 gsub_file "Gemfile", /sqlite3/, "pg"
 
-gsub_file "config/environments/production.rb", "http://assets.example.com", "//\#{ENV['FOG_DIRECTORY']}.s3.amazonaws.com"
+gsub_file "config/environments/production.rb", "'http://assets.example.com'", "\"//\#{ENV['FOG_DIRECTORY']}.s3.amazonaws.com\"
 uncomment_lines 'config/environments/production.rb', /s3.amazonaws.com/
 FileUtils.cp "config/environments/production.rb", "config/environments/staging.rb"
 

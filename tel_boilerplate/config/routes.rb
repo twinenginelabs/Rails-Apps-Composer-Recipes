@@ -6,7 +6,12 @@ ProjectName::Application.routes.draw do
 
   root controller: "pages", action: "home"
 
-  devise_for :users, :controllers => { registrations: "v1/registrations", sessions: "v1/sessions" }
+  devise_for :users, controllers: {
+    registrations: "users/registrations",
+    sessions: "users/sessions",
+    omniauth_callbacks: "users/omniauth_callbacks",
+    passwords: "users/passwords"
+  }
   
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
@@ -16,9 +21,7 @@ ProjectName::Application.routes.draw do
   
   # ------- API -------
   
-  api_version(module: "V1", path: { value: "v1" }, default: true) do
-
-  end
+  
 
   # ------- Pulse -------
   

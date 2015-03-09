@@ -10,8 +10,10 @@
 
   3) Export those environment variables into your shell
 
-  4) Ensure your digital ocean private key is in your authentication agent
-    The private key's name should match the result of doing a `whoami` in your terminal
+  4) Ensure your digital ocean public and private key are in place and added to your agent
+    The keys' names should match the result of doing a `whoami` in your terminal
+    => cp ~/.ssh/id_rsa ~/.ssh/digitalocean-<project-name>/<whoami>
+    => cp ~/.ssh/id_rsa.pub ~/.ssh/digitalocean-<project-name>/<whoami>.pub
     => ssh-add ~/.ssh/digitalocean-<project-name>/<whoami>
 
   5) Create the server

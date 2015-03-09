@@ -1,4 +1,6 @@
-class V1::SessionsController < Devise::SessionsController
+class Users::SessionsController < Devise::SessionsController
+
+  respond_to :json
 
   before_filter :configure_permitted_parameters
 
@@ -8,15 +10,9 @@ class V1::SessionsController < Devise::SessionsController
         super
       }
       format.json {
-        self.resource = if params[:auth]
-          User.find_for_oauth(params[:auth], current_user)
-        else
-          warden.authenticate!(auth_options)
-        end
-
-        self.resource.update_attribute(:device_token, params[:device_token])
-
+        self.resource = warden.authenticate!(auth_options)
         sign_in(resource_name, resource)
+        render "users/me"
       }
     end
   end
@@ -37,7 +33,7 @@ class V1::SessionsController < Devise::SessionsController
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_in).concat([])
+    devise_parameter_sanitizer.for(:sign_in).push()
   end
 
 end

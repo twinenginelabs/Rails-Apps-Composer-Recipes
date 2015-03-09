@@ -3,8 +3,8 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :null_session, if: ->(controller) { controller.request.format == "application/json" }
 
-  before_action :authenticate_user_from_token!
-  before_action :authenticate_user!
+  before_action :authenticate_user_from_token
+  before_action :authenticate_user!, except: :routing_error
   before_action :redirect_admin
   around_action :set_time_zone
 
@@ -29,6 +29,10 @@ class ApplicationController < ActionController::Base
     render_error :not_found, I18n.t("errors.routing_error")
   end
 
+  rescue_from(ActiveRecord::RecordInvalid) do |exception|
+    render_error :unprocessable_entity, exception.message
+  end
+
   rescue_from(CanCan::AccessDenied) do |exception|
     if current_user
       render_error :unauthorized, I18n.t("errors.not_authorized")
@@ -37,12 +41,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def current_ability
-    @current_ability ||= Ability.new(current_user)
-  end
-
   def routing_error
     raise ActionController::RoutingError.new("No route matches #{params[:unmatched_route]}")
+  end
+
+  def current_ability
+    @current_ability ||= Ability.new(current_user)
   end
   
   protected
@@ -59,20 +63,20 @@ class ApplicationController < ActionController::Base
     store_location
 
     respond_to do |format|
-      format.html { render "errors/status", locals: { message: message }, status: status, layout: "application" }
-      format.json { render json: { message: message }, status: status }
+      format.html { render "errors/status", locals: { error: message }, status: status, layout: "application" }
+      format.json { render json: { error: message }, status: status }
     end
   rescue ActionController::UnknownFormat
     render status: status, text: message
   end
 
   def render_object_errors(object)
-    render json: { errors: object.errors.full_messages }, status: :unprocessable_entity
+    render json: { error: object.errors.full_messages }, status: :unprocessable_entity
   end
 
   private
 
-  def authenticate_user_from_token!
+  def authenticate_user_from_token
     user_token = params[:authentication_token].presence
     user = user_token && User.find_by_authentication_token(user_token)
 

@@ -12,6 +12,7 @@
 
   4) Ensure your aws key pair is setup and/or downloaded
     => ~/.ssh/aws/<project-name>.pem
+    => ~/.ssh/aws/<project-name>.pub
 
   5) Create the server
     => RUBBER_ENV=staging ALIAS=staging-master ROLES=background_worker,common,db:primary=true,nginx,postgresql,postgresql_master,redis,redis_master,sidekiq,unicorn,web,app,whenever cap rubber:create
